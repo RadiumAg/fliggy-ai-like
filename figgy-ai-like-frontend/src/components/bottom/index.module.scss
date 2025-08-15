@@ -1,4 +1,6 @@
 .container {
+  position: fixed;
+  
   &.active {
     border-radius: 42px;
   }

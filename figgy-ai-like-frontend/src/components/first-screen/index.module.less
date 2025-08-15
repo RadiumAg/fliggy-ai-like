@@ -10,6 +10,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin-bottom: 64px;
 
     h1 {
       margin: 0;
@@ -24,9 +25,8 @@
   }
 
   .recommend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 330px);
+    gap: 18px;
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
-import FirstScreen from '../../components/first-screen';
-import Header from '../../components/header/header';
+import Bottom from '@/components/bottom';
+import FirstScreen from '@/components/first-screen';
+import Header from '@/components/header';
 
 const Main: React.FC = () => {
   const [isFirstRender, setFirstRender] = React.useState(true);
@@ -9,6 +10,7 @@ const Main: React.FC = () => {
     <div>
       <Header />
       <>{isFirstRender ? <FirstScreen /> : null}</>
+      <Bottom />
     </div>
   );
 };

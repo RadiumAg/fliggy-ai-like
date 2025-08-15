@@ -11,7 +11,6 @@ const Bottom: React.FC = () => {
   return (
     <div className={classNames(Style.container, { [Style.active]: isActive })}>
       <TextArea onFocus={handleFocus}></TextArea>
-      <div></div>
     </div>
   );
 };
