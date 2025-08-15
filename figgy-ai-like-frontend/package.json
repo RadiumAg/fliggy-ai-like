@@ -13,6 +13,8 @@
     "@rc-component/image": "^1.5.0",
     "ahooks": "^3.9.0",
     "axios": "^1.11.0",
+    "classnames": "^2.5.1",
+    "rc-textarea": "^1.10.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
