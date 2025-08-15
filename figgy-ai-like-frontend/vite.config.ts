@@ -12,7 +12,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.join(__dirname, `/src`), // @ = /src
+      '@': path.join(__dirname, `./src`), // @ = /src
     },
   },
   css: {
