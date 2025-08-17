@@ -1,5 +1,6 @@
 import Image from '@rc-component/image';
 import React from 'react';
+import { useChat } from '@/hooks/user-chat';
 import Style from './index.module.less';
 import Recommend from './recommend';
 
@@ -18,13 +19,24 @@ const recommendData = [{
 }];
 
 const FirstScreen: React.FC = () => {
+  const { handleChat } = useChat();
+
   const recommendArray = React.useMemo(() => {
     return recommendData.map((data, index) => {
       const { icon, title } = data;
 
-      return <Recommend key={index} icon={icon} title={title} />;
+      return (
+        <Recommend
+          onClick={() => {
+            handleChat(title);
+          }}
+          key={index}
+          icon={icon}
+          title={title}
+        />
+      );
     });
-  }, []);
+  }, [handleChat]);
 
   return (
     <div className={Style.container}>

@@ -7,12 +7,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/chat': '',
+      '/api/chat': 'https://h5api.m.taobao.com/h5/mtop.alitrip.fliggy.channel.ai.plan.chat/2.0',
     },
   },
   resolve: {
     alias: {
-      '@': path.join(__dirname, `./src`), // @ = /src
+      '@': path.join(__dirname, `./src`),
     },
   },
   css: {

@@ -9,6 +9,7 @@
   .inner-wrapper {
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     border-radius: 42px;
     border: 3px solid rgb(102, 102, 255);
     align-items: center;
@@ -30,7 +31,18 @@
     margin-top: 4px;
   }
 
-  &.active {
-    border-radius: 42px;
+  .tool {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.25s ease;
+  }
+
+  .active {
+    height: auto;
+    border-radius: 18px;
+
+    .tool {
+      height: 60px;
+    }
   }
 }

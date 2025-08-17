@@ -11,11 +11,15 @@ const Bottom: React.FC = () => {
     setIsActive(true);
   }, []);
 
+  const handleBlur = React.useCallback(() => {
+    setIsActive(false);
+  }, []);
+
   return createPortal (
     <div className={classNames(Style.container, { [Style.active]: isActive })}>
-      <div className={Style.innerWrapper}>
-        <TextArea rows={1} onFocus={handleFocus} placeholder="有什么旅行问题问问我吧" className={Style.textarea} />
-        <div></div>
+      <div className={classNames(Style.innerWrapper, { [Style.active]: isActive })}>
+        <TextArea rows={1} onFocus={handleFocus} onBlur={handleBlur} placeholder="有什么旅行问题问问我吧" className={Style.textarea} />
+        <div className={Style.tool}></div>
       </div>
     </div>,
     document.body,
