@@ -3,7 +3,7 @@ import { chat } from '@/services/chat';
 
 function useChat() {
   const handleChat = React.useCallback((question: string) => {
-    chat(question).then();
+    chat({ chat: question }).then();
   }, []);
 
   return {
