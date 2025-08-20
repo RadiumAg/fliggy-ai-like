@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "service": "npx esno ./proxy/proxy.ts"
+    "service": "npx esno ./proxy/service.ts"
   },
   "dependencies": {
     "@rc-component/image": "^1.5.0",

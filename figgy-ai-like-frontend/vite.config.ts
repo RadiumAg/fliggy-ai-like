@@ -15,9 +15,8 @@ export default defineConfig({
   })],
   server: {
     proxy: {
-      '/api/chat': 'https://h5api.m.taobao.com/h5/mtop.alitrip.fliggy.channel.ai.plan.chat/2.0',
+      '/api': 'http://127.0.0.1:3000',
     },
-    https: {},
   },
 
   resolve: {
