@@ -1,4 +1,3 @@
-import axios from 'axios';
 import express from 'express';
 import { runProxy } from './proxy';
 
@@ -13,14 +12,16 @@ app.use(express.json());
 app.get('/api/chat', (req, res) => {
   const { query } = req;
 
-  console.log('[DEBUG]', query);
-
   page.then(async (pageInstance) => {
-    const result = await pageInstance.evaluate(() => {
-      return axios.get('https://h5api.m.taobao.com/h5/mtop.alitrip.fliggy.channel.ai.plan.chat/2.0', {
-        params: query,
-      });
+    const fetchUrl = new URL('https://h5api.m.taobao.com/h5/mtop.alitrip.fliggy.channel.ai.plan.chat/2.0');
+    Object.entries(query).forEach((objArray) => {
+      const [key, value] = objArray;
+      fetchUrl.searchParams.append(key, value as string);
     });
+
+    const result = await pageInstance.evaluate((fetchUrl) => {
+      return fetch(fetchUrl, { credentials: 'include' });
+    }, fetchUrl.toString());
 
     console.log('[DEBUG]', result);
   });
