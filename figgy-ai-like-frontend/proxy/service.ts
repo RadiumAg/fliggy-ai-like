@@ -13,17 +13,9 @@ app.get('/api/chat', (req, res) => {
   const { query } = req;
 
   page.then(async (pageInstance) => {
-    const fetchUrl = new URL('https://h5api.m.taobao.com/h5/mtop.alitrip.fliggy.channel.ai.plan.chat/2.0');
-    Object.entries(query).forEach((objArray) => {
-      const [key, value] = objArray;
-      fetchUrl.searchParams.append(key, value as string);
-    });
-
-    const result = await pageInstance.evaluate((fetchUrl) => {
-      return fetch(fetchUrl, { credentials: 'include' });
-    }, fetchUrl.toString());
-
-    console.log('[DEBUG]', result);
+    const result = await pageInstance.evaluate((data) => {
+      return window.__HUBBLE.request({ v: '2.0', data, useStream: true });
+    }, query);
   });
 
   // 设置 SSE 必需的响应头
