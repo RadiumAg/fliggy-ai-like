@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import { runProxy } from './proxy';
 
@@ -37,9 +38,6 @@ async function handleChatRequest(requestData: any, res: any, req: any) {
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
     });
 
-    // 可选：设置客户端重连时间（毫秒）
-    res.write('retry: 10000\n\n');
-
     // 发送数据的函数
     const sendEvent = (data: any, event = 'message') => {
       try {
@@ -56,9 +54,6 @@ async function handleChatRequest(requestData: any, res: any, req: any) {
         res.write(`data: ${JSON.stringify({ error: '数据序列化失败' })}\n\n`);
       }
     };
-
-    // 发送开始事件
-    sendEvent({ message: '开始AI聊天请求...', timestamp: new Date().toISOString() }, 'start');
 
     // 生成唯一的回调函数名（避免多个请求冲突）
     const callbackId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
