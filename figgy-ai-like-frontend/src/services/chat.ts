@@ -117,7 +117,6 @@ function chatWithFetch(params: ChatParams, callbacks: ChatCallbacks = {}) {
                 }
               }
               catch (e) {
-                debugger;
                 console.warn('解析SSE数据失败:', line, e);
               }
             }
