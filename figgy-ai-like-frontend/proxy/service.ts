@@ -42,10 +42,23 @@ async function handleChatRequest(requestData: any, res: any, req: any) {
 
     // 发送数据的函数
     const sendEvent = (data: any, event = 'message') => {
-      // 格式: event: <event-name>\ndata: <data>\n\n
-      res.write(`event: ${event}\n`);
-      res.write(`data: ${JSON.stringify(data)}\n\n`); // data 行必须以 \n 结尾，事件以 \n\n 结尾
+      try {
+        // 确保数据可以序列化
+        const jsonData = JSON.stringify(data);
+        // SSE 格式: event: <event-name>\ndata: <data>\n\n
+        res.write(`event: ${event}\n`);
+        res.write(`data: ${jsonData}\n\n`); // data 行必须以 \n 结尾，事件以 \n\n 结尾
+      }
+      catch (error) {
+        console.error('发送SSE数据时出错:', error);
+        // 发送错误事件
+        res.write(`event: error\n`);
+        res.write(`data: ${JSON.stringify({ error: '数据序列化失败' })}\n\n`);
+      }
     };
+
+    // 发送开始事件
+    sendEvent({ message: '开始AI聊天请求...', timestamp: new Date().toISOString() }, 'start');
 
     // 生成唯一的回调函数名（避免多个请求冲突）
     const callbackId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
@@ -56,18 +69,18 @@ async function handleChatRequest(requestData: any, res: any, req: any) {
     // 暴露回调函数到浏览器环境
     await pageInstance.exposeFunction(receiveDataFnName, (data: any) => {
       console.log('收到流式数据:', data);
-      sendEvent({ data }, 'data');
+      sendEvent(data, 'data');
     });
 
     await pageInstance.exposeFunction(finishFnName, (data: any) => {
       console.log('请求完成:', data);
-      sendEvent({ data, finished: true }, 'finish');
+      sendEvent(data, 'finish');
       res.end(); // 结束SSE连接
     });
 
     await pageInstance.exposeFunction(failureFnName, (error: any) => {
       console.error('请求失败:', error);
-      sendEvent({ error, failed: true }, 'error');
+      sendEvent(error, 'error');
       res.end(); // 结束SSE连接
     });
 

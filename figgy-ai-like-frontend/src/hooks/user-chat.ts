@@ -1,10 +1,12 @@
 import React from 'react';
-import { chat } from '@/services/chat';
+import { chatWithFetch } from '@/services/chat';
 
 function useChat() {
   const handleChat = React.useCallback((question: string) => {
-    chat({ chat: question }).then((res) => {
-      console.log(res);
+    chatWithFetch({ chat: question }, {
+      onData: (data) => {
+        console.log('data', data);
+      },
     });
   }, []);
 
