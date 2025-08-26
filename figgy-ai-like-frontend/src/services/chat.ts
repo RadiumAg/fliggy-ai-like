@@ -4,65 +4,19 @@ interface ChatParams {
 
 interface ChatCallbacks {
   onData?: (data: any) => void
-  onFinish?: (data: any) => void
+  onFinish?: () => void
   onError?: (error: any) => void
   onStart?: () => void
 }
 
-// 使用 EventSource 进行 SSE 连接
-function chatWithSSE(params: ChatParams, callbacks: ChatCallbacks = {}) {
-  const { chat } = params;
-  const { onData, onFinish, onError, onStart } = callbacks;
-
-  // 构建请求数据
-  const requestData = {
-    chat,
-    platform: 'h5',
-    h5Version: 'h5Version',
-    deviceType: navigator.userAgent,
-  };
-
-  // 使用 POST 请求发送数据并建立 SSE 连接
-  const eventSource = new EventSource(`/api/chat?data=${encodeURIComponent(JSON.stringify(requestData))}`);
-
-  onStart?.();
-
-  eventSource.addEventListener('start', (event) => {
-    const data = JSON.parse(event.data);
-    console.log('SSE 连接已建立:', data.message);
-  });
-
-  eventSource.addEventListener('data', (event) => {
-    const response = JSON.parse(event.data);
-    onData?.(response.data);
-  });
-
-  eventSource.addEventListener('finish', (event) => {
-    const response = JSON.parse(event.data);
-    onFinish?.(response.data);
-    eventSource.close();
-  });
-
-  eventSource.addEventListener('error', (event) => {
-    const response = JSON.parse(event.data);
-    onError?.(response.error);
-    eventSource.close();
-  });
-
-  eventSource.onerror = (error) => {
-    console.error('SSE 连接错误:', error);
-    onError?.(error);
-    eventSource.close();
-  };
-
-  // 返回可用于手动关闭连接的函数
-  return {
-    close: () => eventSource.close(),
-    readyState: () => eventSource.readyState,
-  };
-}
-
-// 使用 fetch API 的替代方案
+/**
+ *
+ *
+ * @param params
+ * @param callbacks
+ * @description 和后端交互
+ *
+ */
 function chatWithFetch(params: ChatParams, callbacks: ChatCallbacks = {}) {
   const { chat } = params;
   const { onData, onFinish, onError, onStart } = callbacks;
@@ -84,18 +38,31 @@ function chatWithFetch(params: ChatParams, callbacks: ChatCallbacks = {}) {
     },
     body: JSON.stringify(requestData),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (!response.body) {
         throw new Error('Response body is null');
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let partialData = ''; // 缓存未解析完成的 JSON 数据
 
-      function readChunk(): Promise<void> {
-        return reader.read().then(({ done, value }) => {
+      const processStream = async () => {
+        while (true) {
+          const { done, value } = await reader.read();
+
           if (done) {
-            onFinish?.(null);
+            // 最后尝试解析剩余的 partialData
+            if (partialData.trim()) {
+              try {
+                const data = JSON.parse(partialData);
+                onData?.(data.data);
+              }
+              catch (e) {
+                console.warn('最终解析失败:', partialData, e);
+              }
+            }
+            onFinish?.();
             return;
           }
 
@@ -104,29 +71,29 @@ function chatWithFetch(params: ChatParams, callbacks: ChatCallbacks = {}) {
 
           for (const line of lines) {
             if (line.startsWith('data: ')) {
+              const dataLine = line.slice(6); // 去除 "data: " 前缀
+              partialData += dataLine;
+            }
+            else if (!line.startsWith('event: ') && line !== '') {
+              partialData += line;
+            }
+
+            if (partialData.trim()) {
               try {
-                const data = JSON.parse(line.slice(6));
-                if (data.finished) {
-                  onFinish?.(data.data);
-                }
-                else if (data.error) {
-                  onError?.(data.error);
-                }
-                else {
-                  onData?.(data.data);
-                }
+                const data = JSON.parse(partialData);
+                onData?.(data.data);
+                partialData = ''; // 成功解析后清空缓存
               }
               catch (e) {
-                console.warn('解析SSE数据失败:', line, e);
+              // JSON 不完整，继续缓存
+                console.warn('解析失败，缓存未完成的 JSON:', partialData, e);
               }
             }
           }
+        }
+      };
 
-          return readChunk();
-        });
-      }
-
-      return readChunk();
+      processStream(); // 启动流处理
     })
     .catch((error) => {
       console.error('Fetch SSE 错误:', error);
@@ -138,5 +105,4 @@ export {
   type ChatCallbacks,
   type ChatParams,
   chatWithFetch,
-  chatWithSSE,
 };

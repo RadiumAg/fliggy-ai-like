@@ -5,7 +5,7 @@ function useChat() {
   const handleChat = React.useCallback((question: string) => {
     chatWithFetch({ chat: question }, {
       onData: (data) => {
-        console.log('data', data);
+        console.log('[DEBUG] onData data', JSON.parse(data.result));
       },
     });
   }, []);
