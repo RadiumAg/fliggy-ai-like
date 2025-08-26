@@ -5,15 +5,11 @@ function chat(params: {
 }) {
   const { chat } = params;
 
-  return fliggyAxios.get('/chat', {
-    params: {
-      data: JSON.stringify({
-        chat,
-        platform: 'h5',
-        h5Version: 'h5Version',
-        deviceType: navigator.userAgent,
-      }),
-    },
+  return fliggyAxios.post('/chat', {
+    chat,
+    platform: 'h5',
+    h5Version: 'h5Version',
+    deviceType: navigator.userAgent,
   });
 }
 
