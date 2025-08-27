@@ -16,9 +16,12 @@
     "ahooks": "^3.9.0",
     "axios": "^1.11.0",
     "classnames": "^2.5.1",
+    "immer": "^10.1.1",
     "rc-textarea": "^1.10.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "use-sync-external-store": "^1.5.0",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.1",

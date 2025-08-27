@@ -88,7 +88,7 @@ async function runProxy() {
 
     const browser = await puppeteer.launch({
       executablePath,
-      headless: false,
+      headless: true,
       defaultViewport: null,
       args: [
         `--user-data-dir=${userDataDir}`,
