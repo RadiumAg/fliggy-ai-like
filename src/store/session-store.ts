@@ -8,9 +8,14 @@ interface State {
 
 interface Session {
   sessionId: string
-  data: {
-    answer: string
-  }
+  seq: number
+  systemMessageId: string
+  userMessageId: string
+  thinking: string
+  scene: string
+
+  message: string
+  status: string
 }
 
 const useSessionStore = create(immer(combine({
@@ -21,10 +26,12 @@ const useSessionStore = create(immer(combine({
       session: [...state.session, data],
     }));
   },
-  updateSession(sessionId: string, data: Session['data']) {
+  updateSession(systemMessageId: string, data: Session) {
     set((state: State) => {
-      const sessionIndex = state.session.findIndex(item => item.sessionId === sessionId);
-      state.session[sessionIndex].data = data;
+      const sessionIndex = state.session.findIndex(item => item.systemMessageId
+        === systemMessageId,
+      );
+      state.session[sessionIndex] = data;
     });
   },
   getSession() {

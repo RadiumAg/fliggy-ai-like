@@ -6,8 +6,9 @@ import { useSessionStore } from '@/store/session-store';
 
 function useChat() {
   const isStart = useRef(false);
-  const { setSession, updateSession } = useStoreWithEqualityFn(useSessionStore, (state) => {
+  const { addSession, updateSession } = useStoreWithEqualityFn(useSessionStore, (state) => {
     const { addSession, updateSession } = state;
+
     return {
       addSession,
       updateSession,
@@ -17,16 +18,15 @@ function useChat() {
   const handleChat = React.useCallback((question: string) => {
     chatWithFetch({ chat: question }, {
       onData: (data) => {
-        const sessionData = JSON.parse(data);
-
-        console.info('[DEBUG] onData data', JSON.parse(sessionData));
+        const sessionData = JSON.parse(data.result);
 
         if (!isStart.current) {
           isStart.current = true;
-          setSession(sessionData);
+          addSession(sessionData);
         }
         else {
-          updateSession();
+          if (data.seq)
+            updateSession(sessionData.systemMessageId, data);
         }
       },
       onFinish() {

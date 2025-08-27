@@ -10,6 +10,9 @@ const ChatContainer: React.FC = () => {
     },
     shallow,
   );
+
+  console.log(sessionList);
+
   return <div></div>;
 };
 
