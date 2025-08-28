@@ -11,7 +11,7 @@ const ChatContainer: React.FC = () => {
     shallow,
   );
 
-  console.log(sessionList);
+  console.log('[DEBUG] sessionList', sessionList);
 
   return <div></div>;
 };

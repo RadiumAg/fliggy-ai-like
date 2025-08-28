@@ -19,8 +19,8 @@ function useChat() {
     chatWithFetch({ chat: question }, {
       onData: (data) => {
         const sessionData = JSON.parse(data.result);
-
-        console.log('[DEBUG]', sessionData);
+        if (sessionData.agentType == null)
+          return;
 
         if (!isStart.current) {
           isStart.current = true;

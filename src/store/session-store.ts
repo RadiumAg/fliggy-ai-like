@@ -8,14 +8,14 @@ interface State {
 
 interface Session {
   sessionId: string
-  seq: number
   systemMessageId: string
   userMessageId: string
-  thinking: string
   scene: string
+  role: string
 
-  message: string
   status: string
+
+  data: Record<string, any>
 }
 
 const useSessionStore = create(immer(combine({
