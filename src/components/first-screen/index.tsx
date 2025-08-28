@@ -1,6 +1,6 @@
 import Image from '@rc-component/image';
 import React from 'react';
-import { useChat } from '@/hooks/user-chat';
+import { useChat } from '@/hooks/use-chat';
 import Style from './index.module.less';
 import Recommend from './recommend';
 

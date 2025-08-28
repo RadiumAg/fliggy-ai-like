@@ -20,6 +20,8 @@ function useChat() {
       onData: (data) => {
         const sessionData = JSON.parse(data.result);
 
+        console.log('[DEBUG]', sessionData);
+
         if (!isStart.current) {
           isStart.current = true;
           addSession(sessionData);
@@ -36,7 +38,7 @@ function useChat() {
         isStart.current = false;
       },
     });
-  }, []);
+  }, [addSession, updateSession]);
 
   return {
     handleChat,
