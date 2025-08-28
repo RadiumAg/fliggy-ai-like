@@ -1,6 +1,18 @@
-function dataFormat(data: Record<string, any>) {
-  return {
+import shortid from 'shortid';
 
+function dataFormat(data: Record<string, any>) {
+  const content = data.message;
+  return {
+    id: shortid.generate(),
+    type: 'voiceMarkdown',
+    data: {
+      content: msg || '',
+      config: {
+        wyw: true,
+        containerClassName: '',
+      },
+    },
+    isEnd: true,
   };
 }
 
