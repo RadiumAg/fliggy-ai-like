@@ -12,18 +12,21 @@ interface Session {
   userMessageId: string
   scene: string
   role: string
-
   status: string
-
   data: Record<string, any>
 }
 
 const useSessionStore = create(immer(combine({
   session: [] as Session[],
 }, (set, get) => ({
-  addSession(data: Session) {
+  addSession(options: { role: string, data: Session }) {
+    const { role, data } = options;
+
     set(state => ({
-      session: [...state.session, data],
+      session: [...state.session, {
+        role,
+        data,
+      }],
     }));
   },
   updateSession(systemMessageId: string, data: Session) {
@@ -31,7 +34,7 @@ const useSessionStore = create(immer(combine({
       const sessionIndex = state.session.findIndex(item => item.systemMessageId
         === systemMessageId,
       );
-      state.session[sessionIndex] = data;
+      state.session[sessionIndex].data.push(data);
     });
   },
   getSession() {

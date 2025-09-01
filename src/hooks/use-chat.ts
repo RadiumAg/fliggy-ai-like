@@ -19,12 +19,13 @@ function useChat() {
     chatWithFetch({ chat: question }, {
       onData: (data) => {
         const sessionData = JSON.parse(data.result);
+
         if (sessionData.agentType == null)
           return;
 
         if (!isStart.current) {
           isStart.current = true;
-          addSession(sessionData);
+          addSession({ role: 'bot', data: sessionData });
         }
         else {
           if (data.seq)

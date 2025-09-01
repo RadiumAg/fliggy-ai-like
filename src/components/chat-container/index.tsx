@@ -1,6 +1,8 @@
+import React from 'react';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { useSessionStore } from '@/store/session-store';
+import MessageWrapper from '../render-stream/message-wrapper';
 
 const ChatContainer: React.FC = () => {
   const sessionList = useStoreWithEqualityFn(
@@ -13,7 +15,15 @@ const ChatContainer: React.FC = () => {
 
   console.log('[DEBUG] sessionList', sessionList);
 
-  return <div></div>;
+  const renderCompoent = React.useMemo(() => {
+    return sessionList.map((sessionData) => {
+      const { role, data } = sessionData;
+
+      return <MessageWrapper></MessageWrapper>;
+    });
+  }, []);
+
+  return <div>{renderCompoent}</div>;
 };
 
 export default ChatContainer;
