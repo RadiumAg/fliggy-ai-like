@@ -1,4 +1,5 @@
 import type React from 'react';
+import classNames from 'classnames';
 import Style from './message-wrapper.module.less';
 
 interface Props {
@@ -10,10 +11,10 @@ const MessageWrapper: React.FC<Props> = (props) => {
   const { role, data } = props;
 
   return (
-    <div className={[{
+    <div className={classNames([{
       [Style.user]: role === 'user',
-      [Style.bot]: role === 'user',
-    }]}
+      [Style.bot]: role === 'bot',
+    }])}
     >
     </div>
   );
