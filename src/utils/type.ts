@@ -14,7 +14,10 @@ enum AgentTypeEnum {
   PHOTO_AGENT = 'photoAgentV1',
 }
 
+type MessageType = 'markdown' | '';
+
 export {
   AgentTypeEnum,
+  type MessageType,
   StreamStatusEnum,
 };
