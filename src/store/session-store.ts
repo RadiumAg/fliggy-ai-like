@@ -1,3 +1,4 @@
+import type { MessageType } from '@/utils/type';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -7,12 +8,15 @@ interface State {
 }
 
 interface Session {
-  sessionId: string
-  systemMessageId: string
-  userMessageId: string
-  scene: string
+  id: string
+  sessionId?: string
+  systemMessageId?: string
+  userMessageId?: string
   role: string
-  status: string
+  status?: string
+  type: MessageType
+  isEnd?: boolean
+
   data: Record<string, any>
 }
 
@@ -43,5 +47,6 @@ const useSessionStore = create(immer(combine({
 }))));
 
 export {
+  type Session,
   useSessionStore,
 };

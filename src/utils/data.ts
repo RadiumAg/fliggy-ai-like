@@ -5,7 +5,7 @@ function dataFormat(data: Record<string, any>) {
 
   return {
     id: shortid.generate(),
-    type: 'voiceMarkdown',
+    type: 'markdown',
     data: {
       content: content || '',
       config: {
@@ -13,7 +13,6 @@ function dataFormat(data: Record<string, any>) {
         containerClassName: '',
       },
     },
-    isEnd: true,
   };
 }
 

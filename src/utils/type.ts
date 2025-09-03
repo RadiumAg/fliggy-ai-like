@@ -10,11 +10,11 @@ enum AgentTypeEnum {
   AI_PLAN = 'aiPlanV1',
   AI_SEARCH = 'aiSearchV1',
   FLIGHT_AGENT = 'flightAgentV1',
-  TRAIN_AGENT = 'trainAgentV1',
+  TRAIN_AGENT = 'trainAgentV1', 
   PHOTO_AGENT = 'photoAgentV1',
 }
 
-type MessageType = 'markdown' | '';
+type MessageType = 'markdown';
 
 export {
   AgentTypeEnum,
