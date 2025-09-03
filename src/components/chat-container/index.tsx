@@ -19,9 +19,9 @@ const ChatContainer: React.FC = () => {
     return sessionList.map((sessionData) => {
       const { role, data } = sessionData;
 
-      return <MessageWrapper />;
+      return <MessageWrapper key={sessionData.id} data={data} role={role} />;
     });
-  }, []);
+  }, [sessionList]);
 
   return <div>{renderCompoent}</div>;
 };

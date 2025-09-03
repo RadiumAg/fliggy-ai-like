@@ -1,5 +1,12 @@
 import type React from 'react';
+import type { Session } from '@/store/session-store';
 
-const Markdown: React.FC = () => {};
+interface Props {
+  data: Session['data']
+}
+
+const Markdown: React.FC<Props> = (props) => {
+  return <div></div>;
+};
 
 export default Markdown;

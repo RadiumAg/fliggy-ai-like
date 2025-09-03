@@ -1,23 +1,26 @@
-import type React from 'react';
+import type { Session } from '@/store/session-store';
 import classNames from 'classnames';
+import React from 'react';
+import Markdown from './markdown-md';
 import Style from './message-wrapper.module.less';
 
 interface Props {
-  data: Record<string, any>;
-  role: string;
+  data: Session['data']
+  role: string
 }
 
-const MessageWrapper: React.FC<Props> = (props) => {
+const MessageWrapper: React.FC<Props> = React.memo((props) => {
   const { role, data } = props;
 
-  const renderItem = (data) => {
+  const renderItem = (data: Session['data']) => {
     const { type } = data;
     switch (type) {
-      case '':
+      case 'markdown':
+        return <Markdown data={data} />;
         break;
 
       default:
-        break;
+        return null;
     }
   };
 
@@ -28,10 +31,11 @@ const MessageWrapper: React.FC<Props> = (props) => {
           [Style.user]: role === 'user',
           [Style.bot]: role === 'bot',
         },
-      ])}>
-      <div className={classNames([Style.bubble])}>{}</div>
+      ])}
+    >
+      <div className={classNames([Style.bubble])}>{renderItem(data)}</div>
     </div>
   );
-};
+});
 
 export default MessageWrapper;
