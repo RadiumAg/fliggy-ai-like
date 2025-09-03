@@ -6,7 +6,7 @@ import Markdown from './markdown-md';
 import Style from './message-wrapper.module.less';
 
 interface Props {
-  data: Session['data']
+  data: Session['content']
   role: Role
 }
 /**
@@ -15,15 +15,18 @@ interface Props {
 const MessageWrapper: React.FC<Props> = React.memo((props) => {
   const { role, data } = props;
 
-  const renderItem = (data: Session['data']) => {
-    const { type } = data;
-    switch (type) {
-      case 'markdown':
-        return <Markdown data={data} />;
+  const renderItem = (data: Session['content']) => {
+    return data.map((messageItemData) => {
+      const { type, message } = messageItemData;
 
-      default:
-        return null;
-    }
+      switch (type) {
+        case 'markdown':
+          return <Markdown data={message} />;
+
+        default:
+          return null;
+      }
+    });
   };
 
   return (

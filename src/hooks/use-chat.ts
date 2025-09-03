@@ -1,3 +1,4 @@
+import { useMemoizedFn } from 'ahooks';
 import React, { useRef } from 'react';
 import shortid from 'shortid';
 import { shallow } from 'zustand/shallow';
@@ -16,32 +17,34 @@ function useChat() {
     };
   }, shallow);
 
-  const handleChat = React.useCallback((question: string) => {
-    addSession({ id: shortid.generate(), role: 'user', data: { content: question } });
-    chatWithFetch({ chat: question }, {
-      onData: (data) => {
-        const sessionData = JSON.parse(data.result);
+  const handleChat = useMemoizedFn((question: string) => {
+    // 添加问题
+    addSession({ id: shortid.generate(), role: 'user', content: [{ type: 'markdown', message: question }] });
 
-        if (sessionData.agentType == null)
-          return;
+    // chatWithFetch({ chat: question }, {
+    //   onData: (data) => {
+    //     const sessionData = JSON.parse(data.result);
 
-        if (!isStart.current) {
-          isStart.current = true;
-          addSession({ role: 'bot', data: sessionData });
-        }
-        else {
-          if (data.seq)
-            updateSession(sessionData.systemMessageId, data);
-        }
-      },
-      onFinish() {
-        isStart.current = false;
-      },
-      onError() {
-        isStart.current = false;
-      },
-    });
-  }, [addSession, updateSession]);
+    //     if (sessionData.agentType == null)
+    //       return;
+
+    //     if (!isStart.current) {
+    //       isStart.current = true;
+    //       addSession({ role: 'bot', content: sessionData });
+    //     }
+    //     else {
+    //       if (data.seq)
+    //         updateSession(sessionData.systemMessageId, data);
+    //     }
+    //   },
+    //   onFinish() {
+    //     isStart.current = false;
+    //   },
+    //   onError() {
+    //     isStart.current = false;
+    //   },
+    // });
+  });
 
   return {
     handleChat,

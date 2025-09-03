@@ -1,4 +1,4 @@
-import type { MessageType, Role } from '@/utils/type';
+import type { AgentTypeEnum, MessageType, Role, StreamStatusEnum } from '@/utils/type';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -9,22 +9,19 @@ interface State {
 
 interface Session {
   id: string
-  sessionId?: string
-  systemMessageId?: string
-  userMessageId?: string
   role: Role
-  status?: string
-  type: MessageType
-  isEnd?: boolean
-
-  data: Record<string, any>
+  agentType: AgentTypeEnum
+  status: StreamStatusEnum
+  systemMessageId: string
+  userMessageId: string
+  content: { type: MessageType, message: string, components: string[] }[]
 }
 
 const useSessionStore = create(immer(combine({
   session: [] as Session[],
 }, (set, get) => ({
   addSession(options: Partial<Session>) {
-    const { role, data } = options;
+    const { role, content: data } = options;
 
     set(state => ({
       session: [...state.session, {
@@ -38,7 +35,7 @@ const useSessionStore = create(immer(combine({
       const sessionIndex = state.session.findIndex(item => item.systemMessageId
         === systemMessageId,
       );
-      state.session[sessionIndex].data.push(data);
+      state.session[sessionIndex].content.push(data);
     });
   },
   getSession() {
