@@ -1,11 +1,13 @@
 import type React from 'react';
 
 interface Props {
-  data: string
+  data?: string
 }
 
 const Markdown: React.FC<Props> = (props) => {
-  return <div></div>;
+  const { data } = props;
+
+  return <div>{data}</div>;
 };
 
 export default Markdown;

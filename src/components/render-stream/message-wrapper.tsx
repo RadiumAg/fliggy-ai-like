@@ -9,6 +9,7 @@ interface Props {
   data: Session['content']
   role: Role
 }
+
 /**
  * 聊天消息组件
  */
@@ -17,11 +18,11 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
 
   const renderItem = (data: Session['content']) => {
     return data.map((messageItemData) => {
-      const { type, message } = messageItemData;
+      const { type, message, id } = messageItemData;
 
       switch (type) {
         case 'markdown':
-          return <Markdown data={message} />;
+          return <Markdown key={id} data={message} />;
 
         default:
           return null;

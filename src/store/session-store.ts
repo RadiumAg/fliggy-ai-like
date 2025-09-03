@@ -7,6 +7,13 @@ interface State {
   session: Array<Session>
 }
 
+interface Content {
+  type: MessageType
+  message: string
+  components: string[]
+  id: string
+}
+
 interface Session {
   id: string
   role: Role
@@ -14,28 +21,21 @@ interface Session {
   status: StreamStatusEnum
   systemMessageId: string
   userMessageId: string
-  content: { type: MessageType, message: string, components: string[] }[]
+  content: Partial<Content>[]
 }
 
 const useSessionStore = create(immer(combine({
   session: [] as Session[],
 }, (set, get) => ({
   addSession(options: Partial<Session>) {
-    const { role, content: data } = options;
-
     set(state => ({
-      session: [...state.session, {
-        role,
-        data,
-      }],
+      session: [...state.session, options],
     }));
   },
-  updateSession(systemMessageId: string, data: Session) {
-    set((state: State) => {
-      const sessionIndex = state.session.findIndex(item => item.systemMessageId
-        === systemMessageId,
-      );
-      state.session[sessionIndex].content.push(data);
+  addSessionContent(content: Partial<Content>) {
+    set((state) => {
+      const session = state.session.at(-1);
+      session?.content.push(content);
     });
   },
   getSession() {

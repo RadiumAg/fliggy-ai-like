@@ -13,8 +13,6 @@ const ChatContainer: React.FC = () => {
     shallow,
   );
 
-  console.log('[DEBUG] sessionList', sessionList);
-
   const renderCompoent = React.useMemo(() => {
     return sessionList.map((sessionData) => {
       const { role, content: data } = sessionData;
