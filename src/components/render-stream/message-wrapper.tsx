@@ -1,4 +1,5 @@
 import type { Session } from '@/store/session-store';
+import type { Role } from '@/utils/type';
 import classNames from 'classnames';
 import React from 'react';
 import Markdown from './markdown-md';
@@ -6,9 +7,11 @@ import Style from './message-wrapper.module.less';
 
 interface Props {
   data: Session['data']
-  role: string
+  role: Role
 }
-
+/**
+ * 聊天消息组件
+ */
 const MessageWrapper: React.FC<Props> = React.memo((props) => {
   const { role, data } = props;
 
@@ -17,7 +20,6 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
     switch (type) {
       case 'markdown':
         return <Markdown data={data} />;
-        break;
 
       default:
         return null;
@@ -29,7 +31,7 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
       className={classNames([
         {
           [Style.user]: role === 'user',
-          [Style.bot]: role === 'bot',
+          [Style.bot]: role === 'assistant',
         },
       ])}
     >

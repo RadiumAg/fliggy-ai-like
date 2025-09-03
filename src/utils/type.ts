@@ -10,14 +10,17 @@ enum AgentTypeEnum {
   AI_PLAN = 'aiPlanV1',
   AI_SEARCH = 'aiSearchV1',
   FLIGHT_AGENT = 'flightAgentV1',
-  TRAIN_AGENT = 'trainAgentV1', 
+  TRAIN_AGENT = 'trainAgentV1',
   PHOTO_AGENT = 'photoAgentV1',
 }
+
+type Role = 'user' | 'assistant';
 
 type MessageType = 'markdown';
 
 export {
   AgentTypeEnum,
   type MessageType,
+  type Role,
   StreamStatusEnum,
 };

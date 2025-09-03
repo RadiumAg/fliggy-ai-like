@@ -23,9 +23,9 @@ const recommendData = [
   },
 ];
 
-type Props = {
-  onItemClick: () => void;
-};
+interface Props {
+  onItemClick: () => void
+}
 
 const FirstScreen: React.FC<Props> = (props) => {
   const { onItemClick } = props;

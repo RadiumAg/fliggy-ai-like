@@ -9,7 +9,6 @@ function dataFormat(data: Record<string, any>) {
     data: {
       content: content || '',
       config: {
-        wyw: true,
         containerClassName: '',
       },
     },

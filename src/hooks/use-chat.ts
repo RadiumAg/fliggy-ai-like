@@ -16,6 +16,7 @@ function useChat() {
   }, shallow);
 
   const handleChat = React.useCallback((question: string) => {
+    addSession({ role: 'user' });
     chatWithFetch({ chat: question }, {
       onData: (data) => {
         const sessionData = JSON.parse(data.result);

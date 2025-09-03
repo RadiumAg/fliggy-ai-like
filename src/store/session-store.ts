@@ -1,4 +1,4 @@
-import type { MessageType } from '@/utils/type';
+import type { MessageType, Role } from '@/utils/type';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -12,7 +12,7 @@ interface Session {
   sessionId?: string
   systemMessageId?: string
   userMessageId?: string
-  role: string
+  role: Role
   status?: string
   type: MessageType
   isEnd?: boolean
