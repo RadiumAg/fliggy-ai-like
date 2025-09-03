@@ -23,7 +23,7 @@ interface Session {
 const useSessionStore = create(immer(combine({
   session: [] as Session[],
 }, (set, get) => ({
-  addSession(options: { role: string, data: Session }) {
+  addSession(options: Partial<Session>) {
     const { role, data } = options;
 
     set(state => ({

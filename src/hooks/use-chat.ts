@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import shortid from 'shortid';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { chatWithFetch } from '@/services/chat';
@@ -16,7 +17,7 @@ function useChat() {
   }, shallow);
 
   const handleChat = React.useCallback((question: string) => {
-    addSession({ role: 'user' });
+    addSession({ id: shortid.generate(), role: 'user', data: { content: question } });
     chatWithFetch({ chat: question }, {
       onData: (data) => {
         const sessionData = JSON.parse(data.result);
