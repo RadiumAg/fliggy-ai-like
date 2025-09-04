@@ -17,7 +17,7 @@ interface Props {
 const MessageWrapper: React.FC<Props> = React.memo((props) => {
   const { role, data } = props;
 
-  const renderItem = (data: Session['content']) => {
+  const renderMessageItem = (data: Session['content']) => {
     return data.map((messageItemData) => {
       const { type, message, components, id } = messageItemData;
 
@@ -44,7 +44,7 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
         },
       ])}
     >
-      <div className={classNames([Style.bubble])}>{renderItem(data)}</div>
+      <div className={classNames([Style.bubble])}>{renderMessageItem(data)}</div>
     </div>
   );
 });
