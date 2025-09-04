@@ -2,12 +2,13 @@ import type { Session } from '@/store/session-store';
 import type { Role } from '@/utils/type';
 import classNames from 'classnames';
 import React from 'react';
+import HotMap from './hot-map';
 import Markdown from './markdown-md';
 import Style from './message-wrapper.module.less';
 
 interface Props {
-  data: Session['content']
   role: Role
+  data: Session['content']
 }
 
 /**
@@ -18,11 +19,14 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
 
   const renderItem = (data: Session['content']) => {
     return data.map((messageItemData) => {
-      const { type, message, id } = messageItemData;
+      const { type, message, components, id } = messageItemData;
 
       switch (type) {
         case 'markdown':
           return <Markdown key={id} data={message} />;
+
+        case 'h-map':
+          return <HotMap key={id} data={components} />;
 
         default:
           return null;
@@ -33,6 +37,7 @@ const MessageWrapper: React.FC<Props> = React.memo((props) => {
   return (
     <div
       className={classNames([
+        Style.container,
         {
           [Style.user]: role === 'user',
           [Style.bot]: role === 'assistant',

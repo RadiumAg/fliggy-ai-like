@@ -16,7 +16,7 @@ enum AgentTypeEnum {
 
 type Role = 'user' | 'assistant';
 
-type MessageType = 'markdown';
+type MessageType = 'markdown' | 'h-map';
 
 export {
   AgentTypeEnum,

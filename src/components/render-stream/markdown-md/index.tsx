@@ -1,6 +1,6 @@
 import type React from 'react';
 import * as ReactMarkdown from 'react-markdown';
-import MessageBubble from '@/components/message-bubble';
+import MessageBubble from '@/components/render-stream/message-bubble';
 
 interface Props {
   data?: string
