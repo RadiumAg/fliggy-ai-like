@@ -22,6 +22,7 @@
     "rc-textarea": "^1.10.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
     "shortid": "^2.2.17",
     "use-sync-external-store": "^1.5.0",
     "zustand": "^5.0.8"
