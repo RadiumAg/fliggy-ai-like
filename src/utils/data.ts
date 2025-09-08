@@ -6,6 +6,7 @@ function dataFormat(data: Record<string, any>) {
   return {
     id: shortid.generate(),
     type: 'markdown',
+    agentType: '',
     data: {
       content: content || '',
       config: {

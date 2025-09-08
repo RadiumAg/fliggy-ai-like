@@ -3,15 +3,18 @@ import React from 'react';
 import shortid from 'shortid';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { chatWithFetch } from '@/services/chat';
 import { useSessionStore } from '@/store/session-store';
+import { dataFormat } from '@/utils/data';
 
 function useChat() {
   const isStart = React.useRef(false);
   const { addSession } = useStoreWithEqualityFn(useSessionStore, (state) => {
-    const { addSession } = state;
+    const { addSession, addSessionContent } = state;
 
     return {
       addSession,
+      addSessionContent,
     };
   }, shallow);
 
@@ -27,29 +30,25 @@ function useChat() {
       }],
     });
 
-    // chatWithFetch({ chat: question }, {
-    //   onData: (data) => {
-    //     const sessionData = JSON.parse(data.result);
+    chatWithFetch({ chat: question }, {
+      onData: (data) => {
+        const sessionData = dataFormat(JSON.parse(data.result));
 
-    //     if (sessionData.agentType == null)
-    //       return;
+        if (sessionData.agentType == null)
+          return;
 
-    //     if (!isStart.current) {
-    //       isStart.current = true;
-    //       addSession({ role: 'bot', content: sessionData });
-    //     }
-    //     else {
-    //       if (data.seq)
-    //         updateSession(sessionData.systemMessageId, data);
-    //     }
-    //   },
-    //   onFinish() {
-    //     isStart.current = false;
-    //   },
-    //   onError() {
-    //     isStart.current = false;
-    //   },
-    // });
+        if (!isStart.current) {
+          isStart.current = true;
+          addSession({ role: 'assistant', content: sessionData });
+        }
+      },
+      onFinish() {
+        isStart.current = false;
+      },
+      onError() {
+        isStart.current = false;
+      },
+    });
   });
 
   return {
