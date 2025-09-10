@@ -9,12 +9,12 @@ import { dataFormat } from '@/utils/data';
 
 function useChat() {
   const isStart = React.useRef(false);
-  const { addSession } = useStoreWithEqualityFn(useSessionStore, (state) => {
-    const { addSession, addSessionContent } = state;
+  const { addSession, getSession } = useStoreWithEqualityFn(useSessionStore, (state) => {
+    const { addSession, getSession } = state;
 
     return {
       addSession,
-      addSessionContent,
+      getSession,
     };
   }, shallow);
 
@@ -30,16 +30,25 @@ function useChat() {
       }],
     });
 
+    const newSessionId = shortid.generate();
+
     chatWithFetch({ chat: question }, {
       onData: (data) => {
-        const sessionData = dataFormat(JSON.parse(data.result));
+        const sessionList = getSession();
+        const sessionData = dataFormat(JSON.parse(data.result), sessionList.at(-1));
 
         if (sessionData.agentType == null)
           return;
 
         if (!isStart.current) {
           isStart.current = true;
-          addSession({ role: 'assistant', content: sessionData });
+
+          addSession({
+            ...sessionData,
+            id: newSessionId,
+          });
+        }
+        else {
         }
       },
       onFinish() {

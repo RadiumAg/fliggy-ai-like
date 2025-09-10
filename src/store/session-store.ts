@@ -1,4 +1,5 @@
 import type { AgentTypeEnum, MessageType, Role, StreamStatusEnum } from '@/utils/type';
+import shortid from 'shortid';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -23,15 +24,9 @@ interface Session {
 const useSessionStore = create(immer(combine({
   session: [] as Session[],
 }, (set, get) => ({
-  addSession(options: Partial<Session>) {
-    set(state => ({
-      session: [...state.session, options],
-    }));
-  },
-  addSessionContent(content: Partial<Content>) {
+  addSession(sessionData: Partial<Session>) {
     set((state) => {
-      const session = state.session.at(-1);
-      session?.content.push(content);
+      state.session.push(sessionData as Session);
     });
   },
   getSession() {
